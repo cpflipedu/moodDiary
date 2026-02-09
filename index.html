@@ -3,35 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEL 日誌範本產生器</title>
+    <title>翻轉教育 SEL 社會情緒學習日誌產生器</title>
     <style>
-        /* 基礎版面樣式 */
+        /* 基礎版面樣式 - 加入極淡的暖色底，增加質感 */
         body {
-            background-color: #f0f2f5;
+            background-color: #fcf9f4; /* 淡淡的米色底，增加教育親和力 */
             margin: 0;
-            padding: 20px;
-            font-family: Arial, "Microsoft JhengHei", sans-serif;
+            padding: 40px 20px;
+            font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+            color: #333;
+            line-height: 1.6;
         }
 
-        /* 讓 #sel-journal-generator 自動撐開並顯示所有內容 */
+        /* 頂部說明區塊 */
+        .intro-container {
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+            text-align: center;
+        }
+
+        .intro-container h1 {
+            color: #004098;
+            margin-top: 0;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .intro-container p {
+            text-align: justify;
+            color: #555;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .highlight {
+            color: #004098;
+            font-weight: bold;
+        }
+
+        /* 產生器主體 - 白色卡片在米色底上會更突出 */
         #sel-journal-generator {
-            overflow: visible !important;
-            height: auto !important;
-            padding-bottom: 16px !important;
             width: 100%;
             max-width: 650px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 2px solid #004098;
-            border-radius: 10px;
-            background: #f9f9f9;
+            margin: 0 auto;
+            padding: 40px;
+            border: 1px solid rgba(0, 64, 152, 0.1);
+            border-radius: 20px;
+            background: #ffffff;
             box-sizing: border-box;
+            box-shadow: 0 15px 35px rgba(0, 64, 152, 0.05); /* 更細膩的投影 */
         }
 
         h2 {
             text-align: center;
             color: #004098;
-            margin-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 28px;
+            letter-spacing: 1px;
         }
 
         .form-group {
@@ -40,78 +68,112 @@
             color: #004098;
             display: flex;
             flex-direction: column;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            padding: 14px;
+            margin-top: 8px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
             box-sizing: border-box;
             font-size: 16px;
+            transition: all 0.3s;
+            background-color: #fdfdfd;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #004098;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 64, 152, 0.1);
         }
 
         #generateBtn {
             width: 100%;
-            max-width: 300px;
-            padding: 12px;
+            max-width: 280px;
+            padding: 16px;
             background: #004098;
             color: #fff;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background 0.3s;
-            margin: 10px auto;
+            transition: all 0.3s;
+            margin: 30px auto 0 auto;
             display: block;
         }
 
         #generateBtn:hover {
-            background: #003070;
+            background: #002d6b;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 64, 152, 0.3);
         }
 
         /* 預覽區塊 */
         #journalOutput {
             display: none;
-            margin-top: 25px;
-            padding: 20px;
+            margin-top: 40px;
+            padding: 25px;
             border: 2px dashed #004098;
-            border-radius: 8px;
-            background: #fff;
-            box-sizing: border-box;
+            border-radius: 15px;
+            background: #fcfdfe;
         }
 
         #printBtn {
-            padding: 10px 25px;
+            padding: 12px 35px;
             background: #28a745;
             color: #fff;
-            font-size: 16px;
+            font-size: 18px;
+            font-weight: bold;
             border: none;
-            border-radius: 6px;
+            border-radius: 50px;
             cursor: pointer;
-            margin-top: 15px;
+            margin-top: 20px;
+            transition: 0.3s;
         }
 
-        /* 錯誤提示框 */
+        #printBtn:hover {
+            background: #218838;
+        }
+
         #errorMsg {
             display: none;
             color: #d93025;
-            background: #f8d7da;
-            padding: 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
+            background: #fff0f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             text-align: center;
+            font-weight: bold;
+            border: 1px solid #ffdada;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 15px; }
+            #sel-journal-generator { padding: 25px 20px; }
+            h2 { font-size: 24px; }
         }
     </style>
 </head>
 <body>
 
+<div class="intro-container">
+    <h1>翻轉教育 SEL 日誌產生器</h1>
+    <p>
+        <span class="highlight">社會情緒學習（Social and Emotional Learning, SEL）</span> 是幫助孩子認識情緒、建立正向人際關係的重要過程。
+        <br><br>
+        老師只需在下方輸入 <span class="highlight">日期、主題與兩則導引提示</span>，點擊生成後即可快速產出 <span class="highlight">一式 4 份</span> 的小型學習單。您可以裁切後直接黏貼在聯絡簿或作文簿上，作為班級每日的心情小練習，讓家長也能共同關注孩子的情緒成長。
+    </p>
+</div>
+
 <div id="sel-journal-generator">
-    <h2>SEL 日誌產生器</h2>
+    <h2>SEL 日誌設定</h2>
     
-    <div id="errorMsg">請填寫完整資訊</div>
+    <div id="errorMsg">⚠️ 請先輸入日期與主題</div>
 
     <div id="journalForm">
         <label class="form-group">
@@ -119,37 +181,37 @@
             <input type="date" id="journalDate" required>
         </label>
         <label class="form-group">
-            主題：
-            <input type="text" id="journalTheme" placeholder="例如：同理心練習" required>
+            練習主題：
+            <input type="text" id="journalTheme" placeholder="例如：我的感恩清單" required>
         </label>
         <label class="form-group">
-            提示一：
-            <input type="text" id="prompt1" placeholder="今天最讓你驕傲的時刻？">
+            引導提示一：
+            <input type="text" id="prompt1" placeholder="今天發生最讓你開心的事？">
         </label>
         <label class="form-group">
-            提示二：
-            <input type="text" id="prompt2" placeholder="你今天遇到的挑戰是？">
+            引導提示二：
+            <input type="text" id="prompt2" placeholder="你今天嘗試了什麼新挑戰？">
         </label>
-        <button id="generateBtn" type="button">生成並預覽</button>
+        <button id="generateBtn" type="button">生成學習單預覽</button>
     </div>
 
     <div id="journalOutput">
         <div id="journalPreview">
             <div id="journalTemplate" style="padding:0 10px;">
-                <h3 style="text-align:center; color:#004098; margin-bottom:10px;">SEL 日誌學習單</h3>
-                <p style="font-weight:bold;">日期：<span id="outDate"></span></p>
-                <p style="font-weight:bold;">主題：<span id="outTheme"></span></p>
-                <hr style="border-color:#ddd; margin:12px 0;">
-                <div style="margin-bottom:15px;">
-                    <p style="font-weight:bold; color:#004098;">1. <span id="outPrompt1"></span></p>
-                    <div style="height:80px; border:1px solid #ccc; border-radius:4px; padding:8px; box-sizing:border-box; background:#fafafa;"></div>
+                <h3 style="text-align:center; color:#004098; margin-bottom:10px; font-size: 18px; border-bottom: 2px solid #004098; padding-bottom: 5px;">SEL 日誌學習單</h3>
+                <p style="font-weight:bold; font-size: 14px;">📅 日期：<span id="outDate"></span></p>
+                <p style="font-weight:bold; font-size: 14px;">💡 主題：<span id="outTheme"></span></p>
+                <hr style="border: 0; border-top: 1px solid #eee; margin:10px 0;">
+                <div style="margin-bottom:12px;">
+                    <p style="font-weight:bold; color:#004098; font-size: 13px;">1. <span id="outPrompt1"></span></p>
+                    <div style="height:60px; border:1px solid #eee; border-radius:4px; background:#ffffff;"></div>
                 </div>
-                <div style="margin-bottom:15px;">
-                    <p style="font-weight:bold; color:#004098;">2. <span id="outPrompt2"></span></p>
-                    <div style="height:80px; border:1px solid #ccc; border-radius:4px; padding:8px; box-sizing:border-box; background:#fafafa;"></div>
+                <div style="margin-bottom:12px;">
+                    <p style="font-weight:bold; color:#004098; font-size: 13px;">2. <span id="outPrompt2"></span></p>
+                    <div style="height:60px; border:1px solid #eee; border-radius:4px; background:#ffffff;"></div>
                 </div>
-                <div style="text-align:center; margin-top:20px;">
-                    <button id="printBtn">列印 A4 學習單 (1頁4份)</button>
+                <div style="text-align:center; margin-top:15px;">
+                    <button id="printBtn">確認列印 (一頁4份)</button>
                 </div>
             </div>
         </div>
@@ -189,13 +251,11 @@
         // 列印功能
         printBtn.addEventListener('click', function() {
             const template = document.getElementById('journalTemplate').cloneNode(true);
-            // 移除預覽內的按鈕
             const btnInTemplate = template.querySelector('#printBtn');
             if(btnInTemplate) btnInTemplate.remove();
 
             const htmlContent = template.innerHTML;
             
-            // 建立 4 份在一個 A4 頁面上
             const printContent = `
                 <div class="sheet">${htmlContent}</div>
                 <div class="sheet">${htmlContent}</div>
@@ -216,23 +276,23 @@
                             flex-wrap: wrap;
                             justify-content: space-between;
                             align-items: flex-start;
-                            font-family: Arial, "Microsoft JhengHei", sans-serif;
+                            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
                             margin: 0;
                             padding: 0;
                         }
                         .sheet {
                             width: 48%;
-                            height: 45vh;
+                            height: 46vh;
                             box-sizing: border-box;
-                            border: 1px solid #004098;
-                            padding: 15px;
+                            border: 1px dashed #004098;
+                            padding: 20px;
                             margin-bottom: 2%;
-                            border-style: dashed;
+                            display: flex;
+                            flex-direction: column;
                         }
-                        h3 { text-align: center; color: #004098; margin: 0 0 10px 0; font-size: 18px; }
-                        p { margin: 5px 0; font-size: 14px; line-height: 1.4; }
-                        hr { border: 0; border-top: 1px solid #ddd; margin: 10px 0; }
-                        .box { height: 100px; border: 1px solid #ccc; margin-top: 5px; border-radius: 4px; }
+                        h3 { text-align: center; color: #004098; margin: 0 0 10px 0; font-size: 18px; border-bottom: 1.5px solid #004098; padding-bottom: 5px; }
+                        p { margin: 8px 0; font-size: 14px; line-height: 1.5; }
+                        hr { border: 0; border-top: 1px solid #eee; margin: 10px 0; }
                         @media print {
                             button { display: none !important; }
                         }
@@ -242,8 +302,9 @@
                     ${printContent}
                     <script>
                         window.onload = function() {
-                            window.print();
-                            // window.close(); // 列印後自動關閉可選
+                            setTimeout(function() {
+                                window.print();
+                            }, 500);
                         };
                     <\/script>
                 </body>
