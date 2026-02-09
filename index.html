@@ -246,10 +246,30 @@
                     <title>列印 SEL 日誌學習單</title>
                     <style>
                         @page { size: A4 portrait; margin: 10mm; }
-                        body { margin: 0; padding: 0; background: white; font-family: "PingFang TC", "Microsoft JhengHei", sans-serif; }
+                        body { 
+                            margin: 0; 
+                            padding: 0; 
+                            background: white !important; 
+                            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+                            overflow: hidden;
+                        }
                         
-                        /* 防止外掛干擾的關鍵設定 */
-                        body > *:not(.print-grid) { display: none !important; }
+                        /* 【核心防禦 1】隱藏所有非指定的直接子元素 */
+                        body > *:not(.print-grid) { 
+                            display: none !important; 
+                            visibility: hidden !important;
+                            opacity: 0 !important;
+                            pointer-events: none !important;
+                            position: absolute !important;
+                            top: -9999px !important;
+                        }
+
+                        /* 針對 Speechify 等外掛的強力 CSS 屏蔽 */
+                        [id*="speechify"], [class*="speechify"], 
+                        [id*="ubersuggest"], [class*="ubersuggest"],
+                        .text-to-speech, #text-to-speech-container {
+                            display: none !important;
+                        }
 
                         .print-grid {
                             display: grid;
@@ -259,6 +279,9 @@
                             width: 100vw;
                             height: 100vh;
                             box-sizing: border-box;
+                            background: white !important;
+                            position: relative;
+                            z-index: 9999; /* 確保在最上層 */
                         }
                         .sheet {
                             border: 1px dashed #004098;
@@ -281,15 +304,30 @@
                 <body>
                     ${printContent}
                     <script>
-                        window.onload = function() {
-                            // 暴力過濾所有非本頁產出的 DOM 元素 (例如擴充功能插入的)
-                            const allNodes = document.body.childNodes;
-                            for (let i = allNodes.length - 1; i >= 0; i--) {
-                                if (allNodes[i].className !== 'print-grid') {
-                                    if(allNodes[i].style) allNodes[i].style.display = 'none';
+                        // 【核心防禦 2】定時清理器：每 50ms 檢查並刪除外來元素
+                        const cleaner = setInterval(() => {
+                            const grid = document.querySelector('.print-grid');
+                            if (!grid) return;
+                            
+                            // 遍歷 body 下的所有子節點
+                            document.body.childNodes.forEach(node => {
+                                if (node !== grid && node.nodeType === 1) {
+                                    node.remove(); // 直接刪除
                                 }
-                            }
-                            setTimeout(() => { window.print(); }, 500);
+                            });
+                        }, 50);
+
+                        window.onload = function() {
+                            // 延遲一段時間確保外掛已經嘗試插入，然後執行最後一次清理並列印
+                            setTimeout(() => {
+                                clearInterval(cleaner); // 停止定時器
+                                // 最後一次強力清理
+                                const grid = document.querySelector('.print-grid');
+                                document.body.innerHTML = '';
+                                document.body.appendChild(grid);
+                                
+                                window.print();
+                            }, 800);
                         };
                     <\/script>
                 </body>
